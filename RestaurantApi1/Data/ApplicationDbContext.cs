@@ -10,7 +10,6 @@ namespace RestaurantApi1.Data
 
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserType> UserTypes { get; set; }
-        public DbSet<Restaurant> Restaurants { get; set; }
+     
     }
 }

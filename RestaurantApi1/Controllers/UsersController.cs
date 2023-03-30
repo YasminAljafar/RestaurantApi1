@@ -33,23 +33,30 @@ namespace RestaurantApi1.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Search(string term)
+        public async Task<IActionResult> Search(string term, User? IsHasReasturant )
         {
-           
+            
+            if (IsHasReasturant.HasRestauran == true )
+            {
                 var user = _context.Users.Where(m => m.Name.Contains(term))
                     .Select(m => new User
                     {
                         Id = m.Id,
                         Name = m.Name,
-                        Email = m.Email,
-                        Password = m.Password,
-                        UserType = m.UserType,
-                        Restaurant=m.Restaurant,
+                        HasRestauran = m.HasRestauran,
 
                     });
-                return Ok(user);
 
-      
+                return Ok(user);
+                
+            }
+            if (term == null)
+            {
+                return BadRequest("Pleas Enter a Trem");
+            }
+            
+            return BadRequest("the user don't have a restaurant");
+
         }
     }
 }

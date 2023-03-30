@@ -33,10 +33,9 @@ namespace RestaurantApi1.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Search(string term , string userType)
+        public async Task<IActionResult> Search(string term)
         {
-            if (userType=="Admin")
-            {
+           
                 var user = _context.Users.Where(m => m.Name.Contains(term))
                     .Select(m => new User
                     {
@@ -44,12 +43,13 @@ namespace RestaurantApi1.Controllers
                         Name = m.Name,
                         Email = m.Email,
                         Password = m.Password,
+                        UserType = m.UserType,
+                        Restaurant=m.Restaurant,
 
                     });
                 return Ok(user);
 
-            }
-            return BadRequest();
+      
         }
     }
 }

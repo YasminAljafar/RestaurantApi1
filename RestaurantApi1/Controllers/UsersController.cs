@@ -21,24 +21,47 @@ namespace RestaurantApi1.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult> GetAllUsers()
+        public async Task<ActionResult> GetAllUsers(bool? IsHasRestaurant)
         {
-            var user = await _context.Users.ToListAsync();
-            if (_context.Users == null)
+            if (IsHasRestaurant == true)
             {
-                return NotFound();
+                var user = await _context.Users.Where(m => m.HasRestauran == true).ToListAsync();
+                if (_context.Users == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
             }
-            return Ok(user);
+            else if(IsHasRestaurant == false)
+            {
+                var user = await _context.Users.Where(m => m.HasRestauran == false).ToListAsync();
+                if (_context.Users == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+            else
+            {
+                var user = await _context.Users.ToListAsync();
+                if (_context.Users == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Search(string term, User? IsHasReasturant )
+        public async Task<IActionResult> Search(string term, bool? IsHasReasturant )
         {
             
-            if (IsHasReasturant.HasRestauran == true )
+            if (IsHasReasturant== true )
             {
-                var user = _context.Users.Where(m => m.Name.Contains(term))
+                var user = _context.Users.Where(m => m.Name.StartsWith(term));
+                var user1=user.Where(m=>m.HasRestauran==true)
                     .Select(m => new User
                     {
                         Id = m.Id,
@@ -47,14 +70,14 @@ namespace RestaurantApi1.Controllers
 
                     });
 
-                return Ok(user);
+                return Ok(user1);
                 
             }
             if (term == null)
             {
                 return BadRequest("Pleas Enter a Trem");
             }
-            
+            else
             return BadRequest("the user don't have a restaurant");
 
         }

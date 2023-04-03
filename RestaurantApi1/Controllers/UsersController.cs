@@ -55,25 +55,25 @@ namespace RestaurantApi1.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Search(string startWith, bool? IsHasReasturant )
+        public async Task<IActionResult> Search(string ResStartWith, bool? IsHasReasturant )
         {
             
             if (IsHasReasturant== true )
             {
-                var user = _context.Users.Where(m => m.Name.StartsWith(startWith));
-                var user1=user.Where(m=>m.HasRestauran==true)
+                var restaurant = _context.Restaurants.Where(m => m.Name.StartsWith(ResStartWith));
+                var user1= restaurant.Where(m=>m.User.HasRestauran==true)
                     .Select(m => new User
                     {
-                        Id = m.Id,
-                        Name = m.Name,
-                        HasRestauran = m.HasRestauran,
-                        Restaurant=m.Restaurant
+                        Id = m.User.Id,
+                        Name = m.User.Name,
+                        HasRestauran = m.User.HasRestauran,
+                        Restaurant=m.User.Restaurant
 
                     });
                 return Ok(user1);
                 
             }
-            if (startWith == null)
+            if (ResStartWith == null)
             {
                 return BadRequest(" Enter letters");
             }

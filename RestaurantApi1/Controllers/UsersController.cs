@@ -57,7 +57,6 @@ namespace RestaurantApi1.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Search(string ResStartWith, bool? IsHasReasturant )
         {
-            
             if (IsHasReasturant== true )
             {
                 var restaurant = _context.Restaurants.Where(m => m.Name.StartsWith(ResStartWith));
